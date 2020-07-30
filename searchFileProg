@@ -1,0 +1,69 @@
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+using namespace std;
+int stringToInt(string str);
+string intToString(int num);
+int main () {
+    string word;
+    string line;
+    string oldestChecker;
+    string youngestChecker;
+    string oldestPerson;
+    string youngestPerson;
+    int age;
+    int oldest = 0;
+    int youngest = 9999999;
+    ifstream fin;
+    
+    fin.open("firstLastAge");
+    while (!fin.eof()) {
+        fin >> word;
+        age = stringToInt(word);
+        if (age){
+            if (age > oldest) {
+                oldest = age;
+            } else if (age < youngest) {
+                youngest = age;
+            }
+        }
+    }
+    fin.close();
+   
+    oldestChecker = intToString(oldest);
+    youngestChecker = intToString(youngest);
+    
+    fin.open("firstLastAge");
+    while (!fin.eof()) {
+        getline(fin,line);
+        size_t found = line.find(oldestChecker);
+        if (found != string::npos) {
+            oldestPerson = line;
+        }
+        size_t found2 = line.find(youngestChecker);
+        if (found2 != string::npos) {
+            youngestPerson = line;
+        }
+        
+    }
+    cout << "Oldest = " << oldestPerson << endl;
+    cout << "Youngest = " << youngestPerson << endl;
+    cout << endl;
+    fin.close();
+    return 0;
+}
+int stringToInt(string str) {
+    int num;
+    stringstream converter;
+    converter << str;
+    converter >> num;
+    return num;
+}
+string intToString(int num) {
+    string str;
+    stringstream converter;
+    converter << num;
+    converter >> str;
+    return str;
+}
